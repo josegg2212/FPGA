@@ -115,20 +115,37 @@ void blink_led_c(void) {
   };
   char estado=0;
   char subest=0;
+  uint64_t port_data;
+  char bot1=0;
+  char bot2=0;
 
   neorv32_gpio_port_set(0); // clear gpio output
 
   int cnt = 0;
 
   while (1) {
+  port_data=neorv32_gpio_port_get();
+  bot1=port_data & 0b01;                //Primer bit de gpio_i (Boton 1)
+  bot2=(port_data & 0b10) >> 1;         //Segundo bit de gpio_i (Boton 2)
+
+  //transicion de estado
+  if(bot1 && !bot2){
+    estado=0;
+    subest=0;
+    }
+  if(!bot1 && bot2){
+    estado=1;
+    subest=0;
+    }
+
     switch(estado){
       case 0:
-        neorv32_gpio_port_set(M1[subest] & 0xF0); // increment counter and mask for second byte
+        neorv32_gpio_port_set(M1[subest] & 0xF0); //Valor de modo funcionamiento 1 cada vez (segundo byte)
         if(subest<5) subest++;
         else subest=0;
         break;
       case 1:
-        neorv32_gpio_port_set(M1[subest] & 0xF0); // increment counter and mask for second byte
+        neorv32_gpio_port_set(M2[subest] & 0xF0); //Valor de modo funcionamiento 1 cada vez (segundo byte)
         if(subest<4) subest++;
         else subest=0;
         break;
