@@ -64,7 +64,7 @@ extern void blink_led_asm(uint32_t gpio_out_addr);
  **************************************************************************/
 void keyboard(void);
 void wb_regs(void);
-
+void wb_calculadora(void);
 
 /**********************************************************************//**
  * Main function; shows an incrementing 8-bit counter on GPIO.output(7:0).
@@ -93,7 +93,7 @@ int main() {
 
 
   //keyboard();
-  wb_regs();
+  wb_calculadora();
 
 }
 
@@ -128,4 +128,22 @@ void keyboard(void) {
     }
     neorv32_cpu_delay_ms(200);
   }
+}
+
+
+void wb_calculadora(void){
+ uint32_t operando1=0x1;
+ uint32_t operando2=0x4;
+ uint32_t operador;
+ uint32_t resultado;
+ uint32_t address=0x90000000;
+
+ neorv32_cpu_store_unsigned_word(address,operando1);
+ neorv32_cpu_store_unsigned_word(address+4,operando2);
+
+
+ 
+ resultado=neorv32_cpu_load_unsigned_word(address)+neorv32_cpu_load_unsigned_word(address+4);
+
+ neorv32_uart0_printf("Resultado: %x\n",resultado); 
 }
