@@ -89,18 +89,8 @@ int main() {
   // say hello
   neorv32_uart0_print("Blinking LED demo program\n");
 
-
-// use ASM version of LED blinking (file: blink_led_in_asm.S)
-#ifdef USE_ASM_VERSION
-
-  blink_led_asm((uint32_t)(&GPIO_OUTPUT));
-
-// use C version of LED blinking
-#else
-
   blink_led_c();
 
-#endif
   return 0;
 }
 
@@ -109,13 +99,41 @@ int main() {
  * C-version of blinky LED counter
  **************************************************************************/
 void blink_led_c(void) {
+  int M1[6]={1*16,          //Secuencia de estados de los leds en el modo de funcionamiento 1
+              2*16,
+              4*16,
+              8*16,
+              4*16,
+              2*16
+  };
+
+  int M2[5]={0*16,          //Secuencia de estados de los leds en el modo de funcionamiento 2
+              1*16,
+              3*16,
+              7*16,
+              15*16
+  };
+  char estado=0;
+  char subest=0;
 
   neorv32_gpio_port_set(0); // clear gpio output
 
   int cnt = 0;
 
   while (1) {
-    neorv32_gpio_port_set(cnt+=16 & 0xF0); // increment counter and mask for lowest 8 bit
+    switch(estado){
+      case 0:
+        neorv32_gpio_port_set(M1[subest] & 0xF0); // increment counter and mask for second byte
+        if(subest<5) subest++;
+        else subest=0;
+        break;
+      case 1:
+        neorv32_gpio_port_set(M1[subest] & 0xF0); // increment counter and mask for second byte
+        if(subest<4) subest++;
+        else subest=0;
+        break;
+    }
+    //neorv32_gpio_port_set(cnt+=16 & 0xF0); // increment counter and mask for second byte
     neorv32_cpu_delay_ms(200); // wait 200ms using busy wait
   }
 }
