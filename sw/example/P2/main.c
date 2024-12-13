@@ -124,6 +124,6 @@ void keyboard(void) {
     }
     tecla_ant=tecla_act;
 
-    neorv32_cpu_delay_ms(200);
+   
   }
 }
