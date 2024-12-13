@@ -100,24 +100,30 @@ int main() {
  **************************************************************************/
 void blink_led_c(void) {
   int M1[6]={1*16,          //Secuencia de estados de los leds en el modo de funcionamiento 1
-              2*16,
-              4*16,
-              8*16,
-              4*16,
-              2*16
+             2*16,
+             4*16,
+             8*16,
+             4*16,
+             2*16
   };
 
   int M2[5]={0*16,          //Secuencia de estados de los leds en el modo de funcionamiento 2
-              1*16,
-              3*16,
-              7*16,
-              15*16
+             1*16,
+             3*16,
+             7*16,
+             15*16
   };
+
+  int M3[2]={10*16,      //Secuencia de estados de los leds en el modo de funcionamiento 3
+             5*16
+  };
+
   int estado=0;
   int subest=0;
   uint64_t port_data;
   char bot1=0;
   char bot2=0;
+  char bot3=0;
 
   neorv32_gpio_port_set(0); // clear gpio output
 
@@ -125,16 +131,21 @@ void blink_led_c(void) {
 
   while (1) {
   port_data=neorv32_gpio_port_get();
-  bot1=port_data & 0b01;                //Primer bit de gpio_i (Boton 1)
-  bot2=(port_data & 0b10) >> 1;         //Segundo bit de gpio_i (Boton 2)
+  bot1=port_data & 0b001;               //Primer bit de gpio_i (Boton 1)
+  bot2=(port_data & 0b010) >> 1;        //Segundo bit de gpio_i (Boton 2)
+  bot3=(port_data & 0b100) >> 2;        //Tercer bit de gpio_i (Boton 3)
 
   //transicion de estado
-  if(bot1 && !bot2){
+  if(bot1 && !bot2 && !bot3){
     estado=0;
     subest=0;
     }
-  if(!bot1 && bot2){
+  if(!bot1 && bot2 && !bot3){
     estado=1;
+    subest=0;
+    }
+  if(!bot1 && !bot2 && bot3){
+    estado=2;
     subest=0;
     }
 
@@ -147,6 +158,11 @@ void blink_led_c(void) {
       case 1:
         neorv32_gpio_port_set(M2[subest] & 0xF0); //Valor de modo funcionamiento 1 cada vez (segundo byte)
         if(subest<4) subest++;
+        else subest=0;
+        break;
+      case 2:
+        neorv32_gpio_port_set(M3[subest] & 0xF0); //Valor de modo funcionamiento 1 cada vez (segundo byte)
+        if(subest<1) subest++;
         else subest=0;
         break;
     }

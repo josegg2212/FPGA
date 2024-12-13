@@ -53,6 +53,7 @@ entity neorv32_iCEBreaker_BoardTop_MinimalBoot is
     -- Button inputs
     iCEBreakerv10_BTN_N              : in std_logic;
     iCEBreakerv10_PMOD2_9_Button_1   : in std_logic;
+    iCEBreakerv10_PMOD2_4_Button_2   : in std_logic;
     iCEBreakerv10_PMOD2_10_Button_3  : in std_logic;
     -- Keyboard inputs
     iCEBreakerv10_PMOD1B_1           : out std_logic;
@@ -325,7 +326,8 @@ begin
   -- IO Connections
   -- -------------------------------------------------------------------------------------------
   gpio_i(0)                        <= iCEBreakerv10_PMOD2_9_Button_1;
-  gpio_i(1)                        <= iCEBreakerv10_PMOD2_10_Button_3;
+  gpio_i(1)                        <= iCEBreakerv10_PMOD2_4_Button_2;
+  gpio_i(2)                        <= iCEBreakerv10_PMOD2_10_Button_3;
   iCEBreakerv10_PMOD2_1_LED_left   <= gpio_o(4);
   iCEBreakerv10_PMOD2_2_LED_right  <= gpio_o(5);
   iCEBreakerv10_PMOD2_8_LED_up     <= gpio_o(6);
