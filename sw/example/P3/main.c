@@ -93,8 +93,9 @@ int main() {
 
 
   //keyboard();
+  while(1){
   wb_calculadora();
-
+  }
 }
 
 void wb_regs(void){
@@ -131,19 +132,65 @@ void keyboard(void) {
 }
 
 
-void wb_calculadora(void){
- uint32_t operando1=0x1;
- uint32_t operando2=0x4;
- uint32_t operador;
- uint32_t resultado;
- uint32_t address=0x90000000;
+void wb_calculadora(void) {
+    uint32_t operando1;
+    uint32_t operando2;
+    uint32_t operador;
+    uint32_t resultado;
+    uint32_t address = 0x90000000;  // Dirección base
 
- neorv32_cpu_store_unsigned_word(address,operando1);
- neorv32_cpu_store_unsigned_word(address+4,operando2);
+    // Solicitar el primer operando
+    neorv32_uart0_printf("Ingrese el primer operando: \n");
+    operando1 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
+    neorv32_cpu_store_unsigned_word(address, operando1);  // Guardar en memoria
 
+    // Solicitar el segundo operando
+    neorv32_uart0_printf("Ingrese el segundo operando: \n");
+    operando2 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
+    neorv32_cpu_store_unsigned_word(address + 4, operando2);  // Guardar en memoria
 
- 
- resultado=neorv32_cpu_load_unsigned_word(address)+neorv32_cpu_load_unsigned_word(address+4);
+    // Solicitar el operador
+    neorv32_uart0_printf("Ingrese el operador (+: suma, -: resta, *: multiplicacion, /: division): \n");
+    operador = (uint32_t)(neorv32_uart0_getc());  // No convertir aun
+    neorv32_cpu_store_unsigned_word(address + 8, operador);  // Guardar en memoria
 
- neorv32_uart0_printf("Resultado: %x\n",resultado); 
+    // Leer operandos y operador desde memoria
+    operando1 = neorv32_cpu_load_unsigned_word(address);
+    operando2 = neorv32_cpu_load_unsigned_word(address + 4);
+    operador = neorv32_cpu_load_unsigned_word(address + 8);
+
+    // Realizar la operación según el operador
+    switch (operador) {
+        case '+':  // Suma
+            resultado = operando1 + operando2;
+            break;
+        case '-':  // Resta
+            resultado = operando1 - operando2;
+            break;
+        case '*':  // Multiplicación
+            resultado = operando1 * operando2;
+            break;
+        case '/':  // División (con validación)
+            if (operando2 != 0) {
+                resultado = operando1 / operando2;
+            } else {
+                resultado = 0xFFFFFFFF;  // Resultado especial para división por cero
+                neorv32_uart0_printf("Error: Division por cero\n");
+            }
+            break;
+        default:  // Operador no válido
+            resultado = 0xFFFFFFFF;  // Resultado especial para error
+            neorv32_uart0_printf("Error: Operador no valido\n");
+            break;
+    }
+
+    // Almacenar el resultado en memoria
+    neorv32_cpu_store_unsigned_word(address + 12, resultado);  // Dirección 0x9000000C
+
+    // Leer resultado
+    resultado = neorv32_cpu_load_unsigned_word(address + 12);
+
+    // Mostrar el resultado
+    neorv32_uart0_printf("Resultado: %u\n", resultado);  // Mostrar como número entero
 }
+
