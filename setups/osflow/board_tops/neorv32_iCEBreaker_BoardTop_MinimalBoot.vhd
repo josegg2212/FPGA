@@ -324,13 +324,15 @@ begin
   -- -------------------------------------------------------------------------------------------
   -- IO Connections
   -- -------------------------------------------------------------------------------------------
-
-  --iCEBreakerv10_PMOD2_1_LED_left   <= gpio_o(0);
-  --iCEBreakerv10_PMOD2_2_LED_right  <= gpio_o(1);
-  --iCEBreakerv10_PMOD2_8_LED_up     <= gpio_o(2);
-  --iCEBreakerv10_PMOD2_3_LED_down   <= gpio_o(3);
+  gpio_i(0)                        <= iCEBreakerv10_PMOD2_9_Button_1;
+  gpio_i(1)                        <= iCEBreakerv10_PMOD2_10_Button_3;
+  iCEBreakerv10_PMOD2_1_LED_left   <= gpio_o(4);
+  iCEBreakerv10_PMOD2_2_LED_right  <= gpio_o(5);
+  iCEBreakerv10_PMOD2_8_LED_up     <= gpio_o(6);
+  iCEBreakerv10_PMOD2_3_LED_down   <= gpio_o(7);
   --iCEBreakerv10_PMOD2_7_LED_center <= gpio_o(4);
-   
+
+  
   iCEBreakerv10_PMOD1B_1        <= gpio_o(0);
   iCEBreakerv10_PMOD1B_2        <= gpio_o(1);
   iCEBreakerv10_PMOD1B_3        <= gpio_o(2);
