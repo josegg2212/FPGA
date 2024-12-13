@@ -113,15 +113,15 @@ void blink_led_c(void) {
               7*16,
               15*16
   };
-  char estado=0;
-  char subest=0;
+  int estado=0;
+  int subest=0;
   uint64_t port_data;
   char bot1=0;
   char bot2=0;
 
   neorv32_gpio_port_set(0); // clear gpio output
 
-  int cnt = 0;
+  //int cnt = 0;
 
   while (1) {
   port_data=neorv32_gpio_port_get();
