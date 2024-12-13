@@ -100,35 +100,29 @@ void keyboard(void) {
   int fil=0;
   int col=0;
   char tecla[4][4]={{'1','2','3','A'},{'4','5','6','B'},{'7','8','9','C'},{'0','F','E','D'}};
-  char pulsado=0;
+  char tecla_act;
+  char tecla_ant='-';
 
   neorv32_gpio_port_set(0xFF);
 
   while (1) {
-    
+    tecla_act='-';
     for(col=0;col<4;col++){
       neorv32_gpio_pin_clr(col);
       for(fil=4;fil<8;fil++){
         if(neorv32_gpio_pin_get(fil)==0){
           //neorv32_uart0_printf("Pulsada tecla en fila %u y columna %u\n",7-fil,3-col);
           //neorv32_uart0_printf("Pulsada tecla %c\n",tecla[7-fil][3-col]);
-          pulsado=1;
+          tecla_act=tecla[7-fil][3-col];
         }
       }
       neorv32_gpio_pin_set(col);
     }
 
-    switch(pulsado){
-      case 0:
-        
-        break;
-      case 1:
-
-        break;
-      case 2:
-
-        break;
+    if(tecla_act!='-' && tecla_act!=tecla_ant){
+      neorv32_uart0_printf("Pulsada tecla %c\n",tecla_act);
     }
+    tecla_ant=tecla_act;
 
     neorv32_cpu_delay_ms(200);
   }
