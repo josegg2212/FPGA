@@ -142,6 +142,9 @@ uint32_t keyboard(void) {
 
 
 void wb_calculadora(void) {
+    int fil;
+    int col;
+    int antireb;
     uint32_t operando1=0;
     uint32_t operando2=0;
     uint32_t operador=0;
@@ -150,11 +153,22 @@ void wb_calculadora(void) {
     uint32_t address = 0x90000000;  // Dirección base
 
     // Solicitar el primer operando
-    neorv32_uart0_printf("Ingrese el primer operando, el operando y el segundo operando, en ese orden.\n");
+    neorv32_uart0_printf("Ingrese el primer operando, el operador y el segundo operando, en ese orden.\n");
     neorv32_uart0_printf("Operadores: A:+, B:-, C:*, D:/.\n");
     //operando1 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
     while((recibido=keyboard())<10){
       operando1=operando1*10+recibido;
+      antireb=1;
+      while(antireb!=0){
+        antireb=0;
+        for(col=0;col<4;col++){
+          neorv32_gpio_pin_clr(col);
+          for(fil=4;fil<8;fil++){
+            antireb+=neorv32_gpio_pin_get(fil);
+          }
+        neorv32_gpio_pin_set(col);
+        }
+      }
     }
     neorv32_uart0_printf("Operando 1: %u.\n", operando1);
     neorv32_cpu_store_unsigned_word(address, operando1);  // Guardar en memoria
@@ -172,6 +186,17 @@ void wb_calculadora(void) {
     recibido=0;
     while((recibido=keyboard())<10){
       operando2=operando2*10+recibido;
+      antireb=1;
+      while(antireb!=0){
+        antireb=0;
+        for(col=0;col<4;col++){
+          neorv32_gpio_pin_clr(col);
+          for(fil=4;fil<8;fil++){
+            antireb+=neorv32_gpio_pin_get(fil);
+          }
+        neorv32_gpio_pin_set(col);
+        }
+      }
     }
     neorv32_uart0_printf("Operando 2: %u.\n", operando2);
     neorv32_cpu_store_unsigned_word(address + 4, operando2);  // Guardar en memoria
