@@ -114,6 +114,8 @@ uint32_t keyboard(void) {
   int col=0;
   uint32_t tecla[4][4]={{0x1,0x2,0x3,0xA},{0x4,0x5,0x6,0xB},{0x7,0x8,0x9,0xC},{0x0,0xF,0xE,0xD}};
   uint32_t tecla_act;
+  uint32_t tecla_ant=0xFF;
+
 
   neorv32_gpio_port_set(0xFF);
 
@@ -127,13 +129,14 @@ uint32_t keyboard(void) {
           //neorv32_uart0_printf("Pulsada tecla %c\n",tecla[7-fil][3-col]);
           tecla_act=tecla[7-fil][3-col];
           if (tecla_act!=0xFF)
-          neorv32_gpio_port_set(((int)(tecla_act)*16) & 0xF0);
+            neorv32_gpio_port_set(((int)(tecla_act)*16) & 0xF0);
         }
       }
       neorv32_gpio_pin_set(col);
+      tecla_ant=tecla_act;
     }
 
-    if(tecla_act!=0xFF){
+    if(tecla_act!=0xFF && tecla_act!=tecla_ant){
       neorv32_uart0_printf("Pulsada tecla %u\n",tecla_act);
       return tecla_act;
     }   
@@ -176,7 +179,11 @@ void wb_calculadora(void) {
     //operando2 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
     recibido=0;
     while((recibido=keyboard())<10){
-      operando2=operando2*10+recibido;
+      if (recibido != 16 && recibido != ultim_recib)
+        operando2=operando2*10+recibido;
+
+      ultim_recib=recibido;
+      
     }
     neorv32_uart0_printf("Operando 2: %u.\n", operando2);
     neorv32_cpu_store_unsigned_word(address + 4, operando2);  // Guardar en memoria
