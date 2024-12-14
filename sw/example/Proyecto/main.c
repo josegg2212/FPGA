@@ -113,8 +113,8 @@ uint32_t keyboard(void) {
   int fil=0;
   int col=0;
   uint32_t tecla[4][4]={{0x1,0x2,0x3,0xA},{0x4,0x5,0x6,0xB},{0x7,0x8,0x9,0xC},{0x0,0xF,0xE,0xD}};
-  uint32_t tecla_act;
-  uint32_t tecla_ant=0xFF;
+  uint32_t tecla_act=0xFF;
+  static uint32_t tecla_ant=0xFF;
 
 
   neorv32_gpio_port_set(0xFF);
@@ -133,13 +133,16 @@ uint32_t keyboard(void) {
         }
       }
       neorv32_gpio_pin_set(col);
-      tecla_ant=tecla_act;
     }
 
     if(tecla_act!=0xFF && tecla_act!=tecla_ant){
+      tecla_ant=tecla_act;
       neorv32_uart0_printf("Pulsada tecla %u\n",tecla_act);
+      neorv32_cpu_delay_ms(50);
       return tecla_act;
-    }   
+    }
+    tecla_ant=tecla_act; 
+    return 16; 
   }
 }
 
