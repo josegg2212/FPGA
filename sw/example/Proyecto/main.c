@@ -89,13 +89,13 @@ int main() {
   neorv32_rte_setup();
 
   // say hello
-  neorv32_uart0_print("P3 program\n");
+  neorv32_uart0_print("Project program\n");
 
 
-  //keyboard();
-  while(1){
-  wb_calculadora();
-  }
+  keyboard();
+  //while(1){
+  //wb_calculadora();
+  //}
 }
 
 void wb_regs(void){
@@ -112,22 +112,33 @@ void wb_regs(void){
 void keyboard(void) {
   int fil=0;
   int col=0;
-  //int cnt = 0;
+  uint32_t tecla[4][4]={{0x1,0x2,0x3,0xA},{0x4,0x5,0x6,0xB},{0x7,0x8,0x9,0xC},{0x0,0xF,0xE,0xD}};
+  uint32_t tecla_act;
+  uint32_t tecla_ant=0xFF;
 
   neorv32_gpio_port_set(0xFF);
 
   while (1) {
-    
+    tecla_act=0xFF;
     for(col=0;col<4;col++){
       neorv32_gpio_pin_clr(col);
       for(fil=4;fil<8;fil++){
         if(neorv32_gpio_pin_get(fil)==0){
-          neorv32_uart0_printf("Pulsada tecla en fila %u y columna %u\n",7-fil,3-col);
+          //neorv32_uart0_printf("Pulsada tecla en fila %u y columna %u\n",7-fil,3-col);
+          //neorv32_uart0_printf("Pulsada tecla %c\n",tecla[7-fil][3-col]);
+          tecla_act=tecla[7-fil][3-col];
+          neorv32_gpio_port_set((int)(tecla_act) & 0xF0);
         }
       }
       neorv32_gpio_pin_set(col);
     }
-    neorv32_cpu_delay_ms(200);
+
+    if(tecla_act!=0xFF && tecla_act!=tecla_ant){
+      neorv32_uart0_printf("Pulsada tecla %c\n",tecla_act);
+    }
+    tecla_ant=tecla_act;
+
+   
   }
 }
 
@@ -151,7 +162,7 @@ void wb_calculadora(void) {
 
     // Solicitar el operador
     neorv32_uart0_printf("Ingrese el operador (+: suma, -: resta, *: multiplicacion, /: division): \n");
-    operador = (uint32_t)(neorv32_uart0_getc());
+    operador = (uint32_t)(neorv32_uart0_getc());  // No convertir aun
     neorv32_cpu_store_unsigned_word(address + 8, operador);  // Guardar en memoria
 
     // Leer operandos y operador desde memoria
