@@ -127,14 +127,15 @@ void keyboard(void) {
           //neorv32_uart0_printf("Pulsada tecla en fila %u y columna %u\n",7-fil,3-col);
           //neorv32_uart0_printf("Pulsada tecla %c\n",tecla[7-fil][3-col]);
           tecla_act=tecla[7-fil][3-col];
-          neorv32_gpio_port_set((int)(tecla_act) & 0xF0);
+          if (tecla_act!=0xFF)
+          neorv32_gpio_port_set(((int)(tecla_act)*16) & 0xF0);
         }
       }
       neorv32_gpio_pin_set(col);
     }
 
     if(tecla_act!=0xFF && tecla_act!=tecla_ant){
-      neorv32_uart0_printf("Pulsada tecla %c\n",tecla_act);
+      neorv32_uart0_printf("Pulsada tecla %u\n",tecla_act);
     }
     tecla_ant=tecla_act;
 

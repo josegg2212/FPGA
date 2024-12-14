@@ -144,7 +144,7 @@ Desensamblado de la sección .text:
  190:	b0050513          	addi	a0,a0,-1280 # 4b00 <__crt0_copy_data_src_begin+0x38e8>
  194:	00112623          	sw	ra,12(sp)
  198:	029000ef          	jal	ra,9c0 <neorv32_uart0_setup>
- 19c:	110000ef          	jal	ra,2ac <neorv32_gpio_available>
+ 19c:	118000ef          	jal	ra,2b4 <neorv32_gpio_available>
  1a0:	00050c63          	beqz	a0,1b8 <main+0x38>
  1a4:	680000ef          	jal	ra,824 <neorv32_rte_setup>
  1a8:	00001537          	lui	a0,0x1
@@ -179,97 +179,95 @@ Desensamblado de la sección .text:
  214:	30d000ef          	jal	ra,d20 <memcpy>
  218:	0ff00513          	li	a0,255
  21c:	00000593          	li	a1,0
- 220:	124000ef          	jal	ra,344 <neorv32_gpio_port_set>
- 224:	0ff00a93          	li	s5,255
- 228:	0ff00c93          	li	s9,255
- 22c:	00800b93          	li	s7,8
- 230:	00400c13          	li	s8,4
- 234:	00001b37          	lui	s6,0x1
+ 220:	12c000ef          	jal	ra,34c <neorv32_gpio_port_set>
+ 224:	0ff00b13          	li	s6,255
+ 228:	0ff00a93          	li	s5,255
+ 22c:	00800c13          	li	s8,8
+ 230:	00400c93          	li	s9,4
+ 234:	00001bb7          	lui	s7,0x1
  238:	00010993          	mv	s3,sp
  23c:	0ff00413          	li	s0,255
  240:	00000493          	li	s1,0
  244:	00048513          	mv	a0,s1
- 248:	0a4000ef          	jal	ra,2ec <neorv32_gpio_pin_clr>
+ 248:	0ac000ef          	jal	ra,2f4 <neorv32_gpio_pin_clr>
  24c:	00098a13          	mv	s4,s3
  250:	00400913          	li	s2,4
  254:	00090513          	mv	a0,s2
- 258:	0c8000ef          	jal	ra,320 <neorv32_gpio_pin_get>
- 25c:	00051a63          	bnez	a0,270 <keyboard+0x9c>
+ 258:	0d0000ef          	jal	ra,328 <neorv32_gpio_pin_get>
+ 25c:	00051e63          	bnez	a0,278 <keyboard+0xa4>
  260:	03ca2403          	lw	s0,60(s4)
- 264:	00000593          	li	a1,0
- 268:	0f047513          	andi	a0,s0,240
- 26c:	0d8000ef          	jal	ra,344 <neorv32_gpio_port_set>
- 270:	00190913          	addi	s2,s2,1
- 274:	ff0a0a13          	addi	s4,s4,-16
- 278:	fd791ee3          	bne	s2,s7,254 <keyboard+0x80>
- 27c:	00048513          	mv	a0,s1
- 280:	00148493          	addi	s1,s1,1
- 284:	038000ef          	jal	ra,2bc <neorv32_gpio_pin_set>
- 288:	ffc98993          	addi	s3,s3,-4
- 28c:	fb849ce3          	bne	s1,s8,244 <keyboard+0x70>
- 290:	01940a63          	beq	s0,s9,2a4 <keyboard+0xd0>
- 294:	01540863          	beq	s0,s5,2a4 <keyboard+0xd0>
- 298:	00040593          	mv	a1,s0
- 29c:	ec4b0513          	addi	a0,s6,-316 # ec4 <__etext>
- 2a0:	03d000ef          	jal	ra,adc <neorv32_uart0_printf>
- 2a4:	00040a93          	mv	s5,s0
- 2a8:	f91ff06f          	j	238 <keyboard+0x64>
+ 264:	01540a63          	beq	s0,s5,278 <keyboard+0xa4>
+ 268:	00441513          	slli	a0,s0,0x4
+ 26c:	0f057513          	andi	a0,a0,240
+ 270:	00000593          	li	a1,0
+ 274:	0d8000ef          	jal	ra,34c <neorv32_gpio_port_set>
+ 278:	00190913          	addi	s2,s2,1
+ 27c:	ff0a0a13          	addi	s4,s4,-16
+ 280:	fd891ae3          	bne	s2,s8,254 <keyboard+0x80>
+ 284:	00048513          	mv	a0,s1
+ 288:	00148493          	addi	s1,s1,1
+ 28c:	038000ef          	jal	ra,2c4 <neorv32_gpio_pin_set>
+ 290:	ffc98993          	addi	s3,s3,-4
+ 294:	fb9498e3          	bne	s1,s9,244 <keyboard+0x70>
+ 298:	01540a63          	beq	s0,s5,2ac <keyboard+0xd8>
+ 29c:	01640863          	beq	s0,s6,2ac <keyboard+0xd8>
+ 2a0:	00040593          	mv	a1,s0
+ 2a4:	ec4b8513          	addi	a0,s7,-316 # ec4 <__etext>
+ 2a8:	035000ef          	jal	ra,adc <neorv32_uart0_printf>
+ 2ac:	00040b13          	mv	s6,s0
+ 2b0:	f89ff06f          	j	238 <keyboard+0x64>
 
-000002ac <neorv32_gpio_available>:
- 2ac:	fe802503          	lw	a0,-24(zero) # ffffffe8 <__ctr0_io_space_begin+0x1e8>
- 2b0:	01055513          	srli	a0,a0,0x10
- 2b4:	00157513          	andi	a0,a0,1
- 2b8:	00008067          	ret
+000002b4 <neorv32_gpio_available>:
+ 2b4:	fe802503          	lw	a0,-24(zero) # ffffffe8 <__ctr0_io_space_begin+0x1e8>
+ 2b8:	01055513          	srli	a0,a0,0x10
+ 2bc:	00157513          	andi	a0,a0,1
+ 2c0:	00008067          	ret
 
-000002bc <neorv32_gpio_pin_set>:
- 2bc:	00100793          	li	a5,1
- 2c0:	01f00713          	li	a4,31
- 2c4:	00a797b3          	sll	a5,a5,a0
- 2c8:	00a74a63          	blt	a4,a0,2dc <neorv32_gpio_pin_set+0x20>
- 2cc:	fc802703          	lw	a4,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
- 2d0:	00f767b3          	or	a5,a4,a5
- 2d4:	fcf02423          	sw	a5,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
- 2d8:	00008067          	ret
- 2dc:	fcc02703          	lw	a4,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
- 2e0:	00f767b3          	or	a5,a4,a5
- 2e4:	fcf02623          	sw	a5,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
- 2e8:	00008067          	ret
+000002c4 <neorv32_gpio_pin_set>:
+ 2c4:	00100793          	li	a5,1
+ 2c8:	01f00713          	li	a4,31
+ 2cc:	00a797b3          	sll	a5,a5,a0
+ 2d0:	00a74a63          	blt	a4,a0,2e4 <neorv32_gpio_pin_set+0x20>
+ 2d4:	fc802703          	lw	a4,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
+ 2d8:	00f767b3          	or	a5,a4,a5
+ 2dc:	fcf02423          	sw	a5,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
+ 2e0:	00008067          	ret
+ 2e4:	fcc02703          	lw	a4,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
+ 2e8:	00f767b3          	or	a5,a4,a5
+ 2ec:	fcf02623          	sw	a5,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
+ 2f0:	00008067          	ret
 
-000002ec <neorv32_gpio_pin_clr>:
- 2ec:	00100793          	li	a5,1
- 2f0:	00a797b3          	sll	a5,a5,a0
- 2f4:	01f00713          	li	a4,31
- 2f8:	fff7c793          	not	a5,a5
- 2fc:	00a74a63          	blt	a4,a0,310 <neorv32_gpio_pin_clr+0x24>
- 300:	fc802703          	lw	a4,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
- 304:	00f777b3          	and	a5,a4,a5
- 308:	fcf02423          	sw	a5,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
- 30c:	00008067          	ret
- 310:	fcc02703          	lw	a4,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
- 314:	00f777b3          	and	a5,a4,a5
- 318:	fcf02623          	sw	a5,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
- 31c:	00008067          	ret
+000002f4 <neorv32_gpio_pin_clr>:
+ 2f4:	00100793          	li	a5,1
+ 2f8:	00a797b3          	sll	a5,a5,a0
+ 2fc:	01f00713          	li	a4,31
+ 300:	fff7c793          	not	a5,a5
+ 304:	00a74a63          	blt	a4,a0,318 <neorv32_gpio_pin_clr+0x24>
+ 308:	fc802703          	lw	a4,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
+ 30c:	00f777b3          	and	a5,a4,a5
+ 310:	fcf02423          	sw	a5,-56(zero) # ffffffc8 <__ctr0_io_space_begin+0x1c8>
+ 314:	00008067          	ret
+ 318:	fcc02703          	lw	a4,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
+ 31c:	00f777b3          	and	a5,a4,a5
+ 320:	fcf02623          	sw	a5,-52(zero) # ffffffcc <__ctr0_io_space_begin+0x1cc>
+ 324:	00008067          	ret
 
-00000320 <neorv32_gpio_pin_get>:
- 320:	00100793          	li	a5,1
- 324:	01f00713          	li	a4,31
- 328:	00a797b3          	sll	a5,a5,a0
- 32c:	00a74863          	blt	a4,a0,33c <neorv32_gpio_pin_get+0x1c>
- 330:	fc002703          	lw	a4,-64(zero) # ffffffc0 <__ctr0_io_space_begin+0x1c0>
- 334:	00f77533          	and	a0,a4,a5
- 338:	00008067          	ret
- 33c:	fc402703          	lw	a4,-60(zero) # ffffffc4 <__ctr0_io_space_begin+0x1c4>
- 340:	ff5ff06f          	j	334 <neorv32_gpio_pin_get+0x14>
+00000328 <neorv32_gpio_pin_get>:
+ 328:	00100793          	li	a5,1
+ 32c:	01f00713          	li	a4,31
+ 330:	00a797b3          	sll	a5,a5,a0
+ 334:	00a74863          	blt	a4,a0,344 <neorv32_gpio_pin_get+0x1c>
+ 338:	fc002703          	lw	a4,-64(zero) # ffffffc0 <__ctr0_io_space_begin+0x1c0>
+ 33c:	00f77533          	and	a0,a4,a5
+ 340:	00008067          	ret
+ 344:	fc402703          	lw	a4,-60(zero) # ffffffc4 <__ctr0_io_space_begin+0x1c4>
+ 348:	ff5ff06f          	j	33c <neorv32_gpio_pin_get+0x14>
 
-00000344 <neorv32_gpio_port_set>:
- 344:	fc000793          	li	a5,-64
- 348:	00a7a423          	sw	a0,8(a5)
- 34c:	00b7a623          	sw	a1,12(a5)
- 350:	00008067          	ret
- 354:	0000                	.2byte	0x0
- 356:	0000                	.2byte	0x0
- 358:	0000                	.2byte	0x0
- 35a:	0000                	.2byte	0x0
+0000034c <neorv32_gpio_port_set>:
+ 34c:	fc000793          	li	a5,-64
+ 350:	00a7a423          	sw	a0,8(a5)
+ 354:	00b7a623          	sw	a1,12(a5)
+ 358:	00008067          	ret
  35c:	0000                	.2byte	0x0
  35e:	0000                	.2byte	0x0
 
