@@ -109,13 +109,15 @@ void wb_regs(void){
  neorv32_uart0_printf("Dato leido: %x\n",data_from_reg); 
 }
 
+uint32_t tecla_act=0xFF;;
+static uint32_t tecla_ant=0xFF;
+
 uint32_t keyboard(void) {
   int fil=0;
   int col=0;
   uint32_t tecla[4][4]={{0x1,0x2,0x3,0xA},{0x4,0x5,0x6,0xB},{0x7,0x8,0x9,0xC},{0x0,0xF,0xE,0xD}};
-  uint32_t tecla_act=0xFF;
-  static uint32_t tecla_ant=0xFF;
-
+  
+  
 
   neorv32_gpio_port_set(0xFF);
 
@@ -136,13 +138,11 @@ uint32_t keyboard(void) {
     }
 
     if(tecla_act!=0xFF && tecla_act!=tecla_ant){
-      tecla_ant=tecla_act;
       neorv32_uart0_printf("Pulsada tecla %u\n",tecla_act);
-      neorv32_cpu_delay_ms(50);
+      neorv32_cpu_delay_ms(150);
       return tecla_act;
     }
     tecla_ant=tecla_act; 
-    return 16; 
   }
 }
 
@@ -151,8 +151,8 @@ void wb_calculadora(void) {
     uint32_t operando1=0;
     uint32_t operando2=0;
     uint32_t operador=0;
-    uint32_t recibido;
-    uint32_t ultim_recib=16;
+    uint32_t recibido=0;
+   
     uint32_t resultado;
     uint32_t address = 0x90000000;  // Dirección base
 
@@ -160,13 +160,13 @@ void wb_calculadora(void) {
     neorv32_uart0_printf("Ingrese el primer operando, el operador y el segundo operando, en ese orden.\n");
     neorv32_uart0_printf("Operadores: A:+, B:-, C:*, D:/.\n");
     //operando1 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
-    while((recibido=keyboard())<10){
-      if (recibido != 16 && recibido != ultim_recib)
-        operando1=operando1*10+recibido;
-
-      ultim_recib=recibido;
-      
+    
+    while((recibido=keyboard())<10){     
+      operando1=operando1*10+recibido;
     }
+    
+      
+    
     neorv32_uart0_printf("Operando 1: %u.\n", operando1);
     neorv32_cpu_store_unsigned_word(address, operando1);  // Guardar en memoria
 
@@ -181,12 +181,10 @@ void wb_calculadora(void) {
     neorv32_uart0_printf("Ingrese el segundo operando: \n");
     //operando2 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
     recibido=0;
-    while((recibido=keyboard())<10){
-      if (recibido != 16 && recibido != ultim_recib)
-        operando2=operando2*10+recibido;
-
-      ultim_recib=recibido;
-      
+    tecla_ant=0xFF;
+    tecla_act=0xFF;
+    while((recibido=keyboard())<14){ 
+      operando2=operando2*10+recibido;
     }
     neorv32_uart0_printf("Operando 2: %u.\n", operando2);
     neorv32_cpu_store_unsigned_word(address + 4, operando2);  // Guardar en memoria
