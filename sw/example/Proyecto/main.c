@@ -109,10 +109,12 @@ void wb_regs(void){
  neorv32_uart0_printf("Dato leido: %x\n",data_from_reg); 
 }
 
-uint32_t tecla_act=0xFF;;
-static uint32_t tecla_ant=0xFF;
+//uint32_t tecla_act=0xFF;
+//static uint32_t tecla_ant=0xFF;
 
 uint32_t keyboard(void) {
+  uint32_t tecla_act=0xFF;
+  uint32_t tecla_ant=0xFF;
   int fil=0;
   int col=0;
   uint32_t tecla[4][4]={{0x1,0x2,0x3,0xA},{0x4,0x5,0x6,0xB},{0x7,0x8,0x9,0xC},{0x0,0xF,0xE,0xD}};
@@ -137,10 +139,10 @@ uint32_t keyboard(void) {
       neorv32_gpio_pin_set(col);
     }
 
-    if(tecla_act!=0xFF && tecla_act!=tecla_ant){
+    if(tecla_act==0xFF && tecla_act!=tecla_ant){    //Devolver si se ha soltado el boton (act=0xFF y ant=tecla pulsada)
       neorv32_uart0_printf("Pulsada tecla %u\n",tecla_act);
-      neorv32_cpu_delay_ms(150);
-      return tecla_act;
+      neorv32_cpu_delay_ms(50);
+      return tecla_ant;
     }
     tecla_ant=tecla_act; 
   }
@@ -180,10 +182,10 @@ void wb_calculadora(void) {
     // Solicitar el segundo operando
     neorv32_uart0_printf("Ingrese el segundo operando: \n");
     //operando2 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
-    recibido=0;
-    tecla_ant=0xFF;
-    tecla_act=0xFF;
-    while((recibido=keyboard())<14){ 
+    //recibido=0;
+    //tecla_ant=0xFF;
+    //tecla_act=0xFF;
+    while((recibido=keyboard())<10){  //Tiene que ser 10 no 14, si pones 14 y le das a algo que no sea E, se le va a sumar 12 o cosas asi sin acabar el while
       operando2=operando2*10+recibido;
     }
     neorv32_uart0_printf("Operando 2: %u.\n", operando2);
