@@ -152,10 +152,12 @@ uint32_t keyboard(void) {
 void wb_calculadora(void) {
     uint32_t operando1=0;
     uint32_t operando2=0;
+    uint32_t operando_in_reg=0;
     uint32_t operador=0;
     uint32_t recibido=0;
    
     uint32_t resultado;
+    uint32_t resultado_in_reg;
     uint32_t address = 0x90000000;  // Dirección base
 
     // Solicitar el primer operando
@@ -164,20 +166,19 @@ void wb_calculadora(void) {
     //operando1 = (uint32_t)(neorv32_uart0_getc() - '0');  // Convertir de ASCII a entero
     
     while((recibido=keyboard())<10){     
-      operando1=operando1*10+recibido;
+      operando_in_reg=operando_in_reg*10+recibido;
     }
     
       
     
-    neorv32_uart0_printf("Operando 1: %u.\n", operando1);
-    neorv32_cpu_store_unsigned_word(address, operando1);  // Guardar en memoria
+    neorv32_uart0_printf("Operando 1: %u.\n", operando_in_reg);
+    neorv32_cpu_store_unsigned_word(address, operando_in_reg);  // Guardar en memoria
 
     // Solicitar el operador
     //neorv32_uart0_printf("Ingrese el operador (+: suma, -: resta, *: multiplicacion, /: division): \n");
     //operador = (uint32_t)(neorv32_uart0_getc());  // No convertir aun
-    operador=recibido;
-    neorv32_uart0_printf("Operador: %u.\n", operador);
-    neorv32_cpu_store_unsigned_word(address + 8, operador);  // Guardar en memoria
+    neorv32_uart0_printf("Operador: %u.\n", recibido);
+    neorv32_cpu_store_unsigned_word(address + 8, recibido);  // Guardar en memoria
 
     // Solicitar el segundo operando
     neorv32_uart0_printf("Ingrese el segundo operando: \n");
@@ -185,11 +186,12 @@ void wb_calculadora(void) {
     //recibido=0;
     //tecla_ant=0xFF;
     //tecla_act=0xFF;
-    while((recibido=keyboard())<10){  //Tiene que ser 10 no 14, si pones 14 y le das a algo que no sea E, se le va a sumar 12 o cosas asi sin acabar el while
-      operando2=operando2*10+recibido;
+    operando_in_reg=0;
+    while((recibido=keyboard())<10){  
+      operando_in_reg=operando_in_reg*10+recibido;
     }
-    neorv32_uart0_printf("Operando 2: %u.\n", operando2);
-    neorv32_cpu_store_unsigned_word(address + 4, operando2);  // Guardar en memoria
+    neorv32_uart0_printf("Operando 2: %u.\n", operando_in_reg);
+    neorv32_cpu_store_unsigned_word(address + 4, operando_in_reg);  // Guardar en memoria
 
     // Leer operandos y operador desde memoria
     operando1 = neorv32_cpu_load_unsigned_word(address);
@@ -199,30 +201,30 @@ void wb_calculadora(void) {
     // Realizar la operación según el operador
     switch (operador) {
         case 10:  // Suma (10=A=+)
-            resultado = operando1 + operando2;
+            resultado_in_reg = operando1 + operando2;
             break;
         case 11:  // Resta (11=B=-)
-            resultado = operando1 - operando2;
+            resultado_in_reg = operando1 - operando2;
             break;
         case 12:  // Multiplicación (12=C=*)
-            resultado = operando1 * operando2;
+            resultado_in_reg = operando1 * operando2;
             break;
         case 13:  // División (con validación) (13=D=/)
             if (operando2 != 0) {
-                resultado = operando1 / operando2;
+                resultado_in_reg = operando1 / operando2;
             } else {
-                resultado = 0xFFFFFFFF;  // Resultado especial para división por cero
+                resultado_in_reg = 0xFFFFFFFF;  // Resultado especial para división por cero
                 neorv32_uart0_printf("Error: Division por cero\n");
             }
             break;
         default:  // Operador no válido
-            resultado = 0xFFFFFFFF;  // Resultado especial para error
+            resultado_in_reg = 0xFFFFFFFF;  // Resultado especial para error
             neorv32_uart0_printf("Error: Operador no valido\n");
             break;
     }
 
     // Almacenar el resultado en memoria
-    neorv32_cpu_store_unsigned_word(address + 12, resultado);  // Dirección 0x9000000C
+    neorv32_cpu_store_unsigned_word(address + 12, resultado_in_reg);  // Dirección 0x9000000C
 
     // Leer resultado
     resultado = neorv32_cpu_load_unsigned_word(address + 12);
