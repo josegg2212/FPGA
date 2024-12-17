@@ -64,6 +64,11 @@ entity neorv32_iCEBreaker_BoardTop_MinimalBoot is
     iCEBreakerv10_PMOD1B_8           : in std_logic;
     iCEBreakerv10_PMOD1B_9           : in std_logic;
     iCEBreakerv10_PMOD1B_10          : in std_logic;
+    --PWM
+    iCEBreakerv10_PMOD1A_1           : out std_logic;
+    iCEBreakerv10_PMOD1A_2           : out std_logic;
+    iCEBreakerv10_PMOD1A_3           : out std_logic;
+    iCEBreakerv10_PMOD1A_4           : out std_logic;
     -- LED outputs
     iCEBreakerv10_LED_R_N            : out std_logic;
     iCEBreakerv10_LED_G_N            : out std_logic;
@@ -128,7 +133,7 @@ architecture neorv32_iCEBreaker_BoardTop_MinimalBoot_rtl of neorv32_iCEBreaker_B
   constant IO_GPIO_EN                   : boolean := true;        -- implement general purpose input/output port unit (GPIO)?
   constant IO_MTIME_EN                  : boolean := true;        -- implement machine system timer (MTIME)?
   constant IO_UART0_EN                  : boolean := true;        -- implement primary universal asynchronous receiver/transmitter (UART0)?
-  constant IO_PWM_NUM_CH                : natural := 3;           -- number of PWM channels to implement (0..60); 0 = disabled
+  constant IO_PWM_NUM_CH                : natural := 4;           -- number of PWM channels to implement (0..60); 0 = disabled
   constant IO_WDT_EN                    : boolean := true;        -- implement watch dog timer (WDT)?
 
   -- -------------------------------------------------------------------------------------------
@@ -137,7 +142,8 @@ architecture neorv32_iCEBreaker_BoardTop_MinimalBoot_rtl of neorv32_iCEBreaker_B
   signal gpio_o : std_ulogic_vector(63 downto 0);
   signal gpio_i : std_ulogic_vector(63 downto 0);
 
-  
+  --Signal pwm--
+  signal pwm_o  : std_ulogic_vector(3 downto 0);
   -- -------------------------------------------------------------------------------------------
   -- Signals for wishbone interface
   -- -------------------------------------------------------------------------------------------
@@ -303,7 +309,7 @@ begin
     twi_scl_io  => open,                         -- twi serial clock line
 
     -- PWM (available if IO_PWM_NUM_CH > 0) --
-    pwm_o       => open,                         -- pwm channels
+    pwm_o       => pwm_o,                         -- pwm channels
 
     -- Custom Functions Subsystem IO --
     cfs_in_i    => (others => '0'),              -- custom CFS inputs conduit
@@ -344,4 +350,9 @@ begin
   gpio_i(6)                     <= iCEBreakerv10_PMOD1B_9;
   gpio_i(7)                     <= iCEBreakerv10_PMOD1B_10;
 
+
+  iCEBreakerv10_PMOD1A_1        <= pwm_o(0);
+  iCEBreakerv10_PMOD1A_2        <= pwm_o(1);
+  iCEBreakerv10_PMOD1A_3        <= pwm_o(2);
+  iCEBreakerv10_PMOD1A_4        <= pwm_o(3);
 end architecture;

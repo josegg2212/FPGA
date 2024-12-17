@@ -52,7 +52,7 @@
 /** Use the custom ASM version for blinking the LEDs defined (= uncommented) */
 //#define USE_ASM_VERSION
 /**@}*/
-
+#define PWM_MAX 128
 
 /**********************************************************************//**
  * ASM function to blink LEDs
@@ -91,6 +91,14 @@ int main() {
   // say hello
   neorv32_uart0_print("Project program\n");
 
+  // deactivate all PWM channels
+  neorv32_pwm_set(0, 0);
+  neorv32_pwm_set(1, 0);
+  neorv32_pwm_set(2, 0);
+  neorv32_pwm_set(3, 0);
+
+  // configure and enable PWM
+  neorv32_pwm_setup(CLK_PRSC_64);
 
   //keyboard();
   while(1){
@@ -140,7 +148,7 @@ uint32_t keyboard(void) {
     }
 
     if(tecla_act==0xFF && tecla_act!=tecla_ant){    //Devolver si se ha soltado el boton (act=0xFF y ant=tecla pulsada)
-      neorv32_uart0_printf("Pulsada tecla %u\n",tecla_act);
+      //neorv32_uart0_printf("Pulsada tecla %u\n",tecla_act);
       neorv32_cpu_delay_ms(50);
       return tecla_ant;
     }
@@ -150,6 +158,8 @@ uint32_t keyboard(void) {
 
 
 void wb_calculadora(void) {
+    uint8_t pwm = 0; 
+    uint8_t ch = 0;
     uint32_t operando1=0;
     uint32_t operando2=0;
     uint32_t operando_in_reg=0;
@@ -202,16 +212,20 @@ void wb_calculadora(void) {
     switch (operador) {
         case 10:  // Suma (10=A=+)
             resultado_in_reg = operando1 + operando2;
+            ch=0;
             break;
         case 11:  // Resta (11=B=-)
             resultado_in_reg = operando1 - operando2;
+            ch=1;
             break;
         case 12:  // Multiplicación (12=C=*)
             resultado_in_reg = operando1 * operando2;
+            ch=2;
             break;
         case 13:  // División (con validación) (13=D=/)
             if (operando2 != 0) {
                 resultado_in_reg = operando1 / operando2;
+                ch=3;
             } else {
                 resultado_in_reg = 0xFFFFFFFF;  // Resultado especial para división por cero
                 neorv32_uart0_printf("Error: Division por cero\n");
@@ -222,6 +236,13 @@ void wb_calculadora(void) {
             neorv32_uart0_printf("Error: Operador no valido\n");
             break;
     }
+    pwm++;
+    neorv32_pwm_set(ch, pwm);
+    neorv32_cpu_delay_ms(1000); // wait ~10ms
+    
+    // deactivate all PWM channels
+    neorv32_pwm_set(ch, 0);
+
 
     // Almacenar el resultado en memoria
     neorv32_cpu_store_unsigned_word(address + 12, resultado_in_reg);  // Dirección 0x9000000C

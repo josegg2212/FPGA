@@ -121,13 +121,10 @@ int main() {
       }
     }
   
-    // output new duty cycle
-    if (ch != 3) { // skip channel 3
-      neorv32_pwm_set(ch, pwm);
-    }
-
+    
+    neorv32_pwm_set(ch, pwm);
     neorv32_cpu_delay_ms(10); // wait ~10ms
+  
   }
-
   return 0;
 }
