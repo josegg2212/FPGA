@@ -327,7 +327,7 @@ Desensamblado de la sección .text:
      45c:	369000ef          	jal	ra,fc4 <__mulsi3>
      460:	00050413          	mv	s0,a0
      464:	00200493          	li	s1,2
-     468:	09600593          	li	a1,150
+     468:	06400593          	li	a1,100
      46c:	00048513          	mv	a0,s1
      470:	208000ef          	jal	ra,678 <neorv32_pwm_set>
      474:	3e800513          	li	a0,1000

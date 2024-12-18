@@ -187,7 +187,7 @@ void wb_calculadora(void) {
     // Solicitar el operador
     //neorv32_uart0_printf("Ingrese el operador (+: suma, -: resta, *: multiplicacion, /: division): \n");
     //operador = (uint32_t)(neorv32_uart0_getc());  // No convertir aun
-    neorv32_uart0_printf("Operador: %u.\n", recibido);
+    neorv32_uart0_printf("Operador: %x.\n", recibido);
     neorv32_cpu_store_unsigned_word(address + 8, recibido);  // Guardar en memoria
 
     // Solicitar el segundo operando
@@ -236,7 +236,7 @@ void wb_calculadora(void) {
             neorv32_uart0_printf("Error: Operador no valido\n");
             break;
     }
-    pwm++;
+    pwm=100;
     neorv32_pwm_set(ch, pwm);
     neorv32_cpu_delay_ms(1000); // wait ~10ms
     
