@@ -77,7 +77,7 @@ Desensamblado de la sección .text:
 
 000000dc <__crt0_clear_bss_loop_end>:
   dc:	00001597          	auipc	a1,0x1
-  e0:	0fc58593          	addi	a1,a1,252 # 11d8 <__crt0_copy_data_src_begin>
+  e0:	10058593          	addi	a1,a1,256 # 11dc <__crt0_copy_data_src_begin>
   e4:	80000617          	auipc	a2,0x80000
   e8:	f1c60613          	addi	a2,a2,-228 # 80000000 <__ctr0_io_space_begin+0x80000200>
   ec:	80000697          	auipc	a3,0x80000
@@ -141,7 +141,7 @@ Desensamblado de la sección .text:
  184:	ff010113          	addi	sp,sp,-16
  188:	00000613          	li	a2,0
  18c:	00000593          	li	a1,0
- 190:	b0050513          	addi	a0,a0,-1280 # 4b00 <__crt0_copy_data_src_begin+0x3928>
+ 190:	b0050513          	addi	a0,a0,-1280 # 4b00 <__crt0_copy_data_src_begin+0x3924>
  194:	00112623          	sw	ra,12(sp)
  198:	019000ef          	jal	ra,9b0 <neorv32_uart0_setup>
  19c:	100000ef          	jal	ra,29c <neorv32_gpio_available>
@@ -163,7 +163,7 @@ Desensamblado de la sección .text:
  1d4:	fc010113          	addi	sp,sp,-64
  1d8:	000015b7          	lui	a1,0x1
  1dc:	01000613          	li	a2,16
- 1e0:	f0058593          	addi	a1,a1,-256 # f00 <__etext+0x4c>
+ 1e0:	f0458593          	addi	a1,a1,-252 # f04 <__etext+0x50>
  1e4:	00010513          	mv	a0,sp
  1e8:	02112e23          	sw	ra,60(sp)
  1ec:	03412423          	sw	s4,40(sp)
@@ -322,7 +322,7 @@ Desensamblado de la sección .text:
  414:	30200073          	mret
  418:	00001737          	lui	a4,0x1
  41c:	00279793          	slli	a5,a5,0x2
- 420:	f1070713          	addi	a4,a4,-240 # f10 <__etext+0x5c>
+ 420:	f1470713          	addi	a4,a4,-236 # f14 <__etext+0x60>
  424:	00e787b3          	add	a5,a5,a4
  428:	0007a783          	lw	a5,0(a5)
  42c:	00078067          	jr	a5
@@ -333,7 +333,7 @@ Desensamblado de la sección .text:
  440:	f8f764e3          	bltu	a4,a5,3c8 <__neorv32_rte_core+0x78>
  444:	00001737          	lui	a4,0x1
  448:	00279793          	slli	a5,a5,0x2
- 44c:	f4070713          	addi	a4,a4,-192 # f40 <__etext+0x8c>
+ 44c:	f4470713          	addi	a4,a4,-188 # f44 <__etext+0x90>
  450:	00e787b3          	add	a5,a5,a4
  454:	0007a783          	lw	a5,0(a5)
  458:	00078067          	jr	a5
@@ -423,14 +423,14 @@ Desensamblado de la sección .text:
  598:	00050913          	mv	s2,a0
  59c:	00001537          	lui	a0,0x1
  5a0:	00912a23          	sw	s1,20(sp)
- 5a4:	fb450513          	addi	a0,a0,-76 # fb4 <__etext+0x100>
+ 5a4:	fb850513          	addi	a0,a0,-72 # fb8 <__etext+0x104>
  5a8:	000014b7          	lui	s1,0x1
  5ac:	00812c23          	sw	s0,24(sp)
  5b0:	01312623          	sw	s3,12(sp)
  5b4:	00112e23          	sw	ra,28(sp)
  5b8:	01c00413          	li	s0,28
  5bc:	4b8000ef          	jal	ra,a74 <neorv32_uart0_print>
- 5c0:	1a848493          	addi	s1,s1,424 # 11a8 <hex_symbols.0>
+ 5c0:	1ac48493          	addi	s1,s1,428 # 11ac <hex_symbols.0>
  5c4:	ffc00993          	li	s3,-4
  5c8:	008957b3          	srl	a5,s2,s0
  5cc:	00f7f793          	andi	a5,a5,15
@@ -455,7 +455,7 @@ Desensamblado de la sección .text:
  610:	390000ef          	jal	ra,9a0 <neorv32_uart0_available>
  614:	1a050e63          	beqz	a0,7d0 <__neorv32_rte_debug_exc_handler+0x1d0>
  618:	00001537          	lui	a0,0x1
- 61c:	fb850513          	addi	a0,a0,-72 # fb8 <__etext+0x104>
+ 61c:	fbc50513          	addi	a0,a0,-68 # fbc <__etext+0x108>
  620:	454000ef          	jal	ra,a74 <neorv32_uart0_print>
  624:	34202473          	csrr	s0,mcause
  628:	00900713          	li	a4,9
@@ -467,7 +467,7 @@ Desensamblado de la sección .text:
  640:	0087ee63          	bltu	a5,s0,65c <__neorv32_rte_debug_exc_handler+0x5c>
  644:	00001737          	lui	a4,0x1
  648:	00241793          	slli	a5,s0,0x2
- 64c:	17870713          	addi	a4,a4,376 # 1178 <__etext+0x2c4>
+ 64c:	17c70713          	addi	a4,a4,380 # 117c <__etext+0x2c8>
  650:	00e787b3          	add	a5,a5,a4
  654:	0007a783          	lw	a5,0(a5)
  658:	00078067          	jr	a5
@@ -480,7 +480,7 @@ Desensamblado de la sección .text:
  674:	00778793          	addi	a5,a5,7
  678:	12f40463          	beq	s0,a5,7a0 <__neorv32_rte_debug_exc_handler+0x1a0>
  67c:	00001537          	lui	a0,0x1
- 680:	11850513          	addi	a0,a0,280 # 1118 <__etext+0x264>
+ 680:	11c50513          	addi	a0,a0,284 # 111c <__etext+0x268>
  684:	3f0000ef          	jal	ra,a74 <neorv32_uart0_print>
  688:	00040513          	mv	a0,s0
  68c:	f05ff0ef          	jal	ra,590 <__neorv32_rte_print_hex_word>
@@ -490,17 +490,17 @@ Desensamblado de la sección .text:
  69c:	00f00713          	li	a4,15
  6a0:	fcf76ee3          	bltu	a4,a5,67c <__neorv32_rte_debug_exc_handler+0x7c>
  6a4:	00001537          	lui	a0,0x1
- 6a8:	10850513          	addi	a0,a0,264 # 1108 <__etext+0x254>
+ 6a8:	10c50513          	addi	a0,a0,268 # 110c <__etext+0x258>
  6ac:	3c8000ef          	jal	ra,a74 <neorv32_uart0_print>
  6b0:	00048513          	mv	a0,s1
  6b4:	3a8000ef          	jal	ra,a5c <neorv32_uart0_putc>
  6b8:	00001537          	lui	a0,0x1
- 6bc:	15c50513          	addi	a0,a0,348 # 115c <__etext+0x2a8>
+ 6bc:	16050513          	addi	a0,a0,352 # 1160 <__etext+0x2ac>
  6c0:	3b4000ef          	jal	ra,a74 <neorv32_uart0_print>
  6c4:	34002573          	csrr	a0,mscratch
  6c8:	ec9ff0ef          	jal	ra,590 <__neorv32_rte_print_hex_word>
  6cc:	00001537          	lui	a0,0x1
- 6d0:	16450513          	addi	a0,a0,356 # 1164 <__etext+0x2b0>
+ 6d0:	16850513          	addi	a0,a0,360 # 1168 <__etext+0x2b4>
  6d4:	3a0000ef          	jal	ra,a74 <neorv32_uart0_print>
  6d8:	34302573          	csrr	a0,mtval
  6dc:	eb5ff0ef          	jal	ra,590 <__neorv32_rte_print_hex_word>
@@ -508,61 +508,61 @@ Desensamblado de la sección .text:
  6e4:	00c12083          	lw	ra,12(sp)
  6e8:	00412483          	lw	s1,4(sp)
  6ec:	00001537          	lui	a0,0x1
- 6f0:	17050513          	addi	a0,a0,368 # 1170 <__etext+0x2bc>
+ 6f0:	17450513          	addi	a0,a0,372 # 1174 <__etext+0x2c0>
  6f4:	01010113          	addi	sp,sp,16
  6f8:	37c0006f          	j	a74 <neorv32_uart0_print>
  6fc:	00001537          	lui	a0,0x1
- 700:	fc050513          	addi	a0,a0,-64 # fc0 <__etext+0x10c>
+ 700:	fc450513          	addi	a0,a0,-60 # fc4 <__etext+0x110>
  704:	370000ef          	jal	ra,a74 <neorv32_uart0_print>
  708:	fb1ff06f          	j	6b8 <__neorv32_rte_debug_exc_handler+0xb8>
  70c:	00001537          	lui	a0,0x1
- 710:	fe050513          	addi	a0,a0,-32 # fe0 <__etext+0x12c>
+ 710:	fe450513          	addi	a0,a0,-28 # fe4 <__etext+0x130>
  714:	360000ef          	jal	ra,a74 <neorv32_uart0_print>
  718:	f7c02783          	lw	a5,-132(zero) # ffffff7c <__ctr0_io_space_begin+0x17c>
  71c:	0a07d463          	bgez	a5,7c4 <__neorv32_rte_debug_exc_handler+0x1c4>
  720:	0017f793          	andi	a5,a5,1
  724:	08078a63          	beqz	a5,7b8 <__neorv32_rte_debug_exc_handler+0x1b8>
  728:	00001537          	lui	a0,0x1
- 72c:	13050513          	addi	a0,a0,304 # 1130 <__etext+0x27c>
+ 72c:	13450513          	addi	a0,a0,308 # 1134 <__etext+0x280>
  730:	fd5ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  734:	00001537          	lui	a0,0x1
- 738:	ffc50513          	addi	a0,a0,-4 # ffc <__etext+0x148>
+ 738:	00050513          	mv	a0,a0
  73c:	fc9ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  740:	00001537          	lui	a0,0x1
- 744:	01050513          	addi	a0,a0,16 # 1010 <__etext+0x15c>
+ 744:	01450513          	addi	a0,a0,20 # 1014 <__etext+0x160>
  748:	fbdff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  74c:	00001537          	lui	a0,0x1
- 750:	01c50513          	addi	a0,a0,28 # 101c <__etext+0x168>
+ 750:	02050513          	addi	a0,a0,32 # 1020 <__etext+0x16c>
  754:	fb1ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  758:	00001537          	lui	a0,0x1
- 75c:	03450513          	addi	a0,a0,52 # 1034 <__etext+0x180>
+ 75c:	03850513          	addi	a0,a0,56 # 1038 <__etext+0x184>
  760:	fb5ff06f          	j	714 <__neorv32_rte_debug_exc_handler+0x114>
  764:	00001537          	lui	a0,0x1
- 768:	04850513          	addi	a0,a0,72 # 1048 <__etext+0x194>
+ 768:	04c50513          	addi	a0,a0,76 # 104c <__etext+0x198>
  76c:	f99ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  770:	00001537          	lui	a0,0x1
- 774:	06450513          	addi	a0,a0,100 # 1064 <__etext+0x1b0>
+ 774:	06850513          	addi	a0,a0,104 # 1068 <__etext+0x1b4>
  778:	f9dff06f          	j	714 <__neorv32_rte_debug_exc_handler+0x114>
  77c:	00001537          	lui	a0,0x1
- 780:	07850513          	addi	a0,a0,120 # 1078 <__etext+0x1c4>
+ 780:	07c50513          	addi	a0,a0,124 # 107c <__etext+0x1c8>
  784:	f81ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  788:	00001537          	lui	a0,0x1
- 78c:	09850513          	addi	a0,a0,152 # 1098 <__etext+0x1e4>
+ 78c:	09c50513          	addi	a0,a0,156 # 109c <__etext+0x1e8>
  790:	f75ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  794:	00001537          	lui	a0,0x1
- 798:	0b850513          	addi	a0,a0,184 # 10b8 <__etext+0x204>
+ 798:	0bc50513          	addi	a0,a0,188 # 10bc <__etext+0x208>
  79c:	f69ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  7a0:	00001537          	lui	a0,0x1
- 7a4:	0d450513          	addi	a0,a0,212 # 10d4 <__etext+0x220>
+ 7a4:	0d850513          	addi	a0,a0,216 # 10d8 <__etext+0x224>
  7a8:	f5dff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  7ac:	00001537          	lui	a0,0x1
- 7b0:	0ec50513          	addi	a0,a0,236 # 10ec <__etext+0x238>
+ 7b0:	0f050513          	addi	a0,a0,240 # 10f0 <__etext+0x23c>
  7b4:	f51ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  7b8:	00001537          	lui	a0,0x1
- 7bc:	14050513          	addi	a0,a0,320 # 1140 <__etext+0x28c>
+ 7bc:	14450513          	addi	a0,a0,324 # 1144 <__etext+0x290>
  7c0:	f45ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  7c4:	00001537          	lui	a0,0x1
- 7c8:	15050513          	addi	a0,a0,336 # 1150 <__etext+0x29c>
+ 7c8:	15450513          	addi	a0,a0,340 # 1154 <__etext+0x2a0>
  7cc:	f39ff06f          	j	704 <__neorv32_rte_debug_exc_handler+0x104>
  7d0:	00c12083          	lw	ra,12(sp)
  7d4:	00812403          	lw	s0,8(sp)
@@ -619,7 +619,7 @@ Desensamblado de la sección .text:
  888:	00058523          	sb	zero,10(a1)
  88c:	00000993          	li	s3,0
  890:	00410913          	addi	s2,sp,4
- 894:	1cca0a13          	addi	s4,s4,460 # 11cc <numbers.1>
+ 894:	1d0a0a13          	addi	s4,s4,464 # 11d0 <numbers.1>
  898:	00a00593          	li	a1,10
  89c:	00048513          	mv	a0,s1
  8a0:	40c000ef          	jal	ra,cac <__umodsi3>
@@ -676,7 +676,7 @@ Desensamblado de la sección .text:
  964:	00001637          	lui	a2,0x1
  968:	00758693          	addi	a3,a1,7
  96c:	00000713          	li	a4,0
- 970:	1b860613          	addi	a2,a2,440 # 11b8 <symbols.0>
+ 970:	1bc60613          	addi	a2,a2,444 # 11bc <symbols.0>
  974:	02000813          	li	a6,32
  978:	00e557b3          	srl	a5,a0,a4
  97c:	00f7f793          	andi	a5,a5,15
@@ -730,7 +730,7 @@ Desensamblado de la sección .text:
  a2c:	00412483          	lw	s1,4(sp)
  a30:	01010113          	addi	sp,sp,16
  a34:	00008067          	ret
- a38:	ffe70693          	addi	a3,a4,-2 # ffffffe <__crt0_copy_data_src_begin+0xfffee26>
+ a38:	ffe70693          	addi	a3,a4,-2 # ffffffe <__crt0_copy_data_src_begin+0xfffee22>
  a3c:	0fd6f693          	andi	a3,a3,253
  a40:	00069a63          	bnez	a3,a54 <neorv32_uart0_setup+0xa4>
  a44:	00355513          	srli	a0,a0,0x3
@@ -960,7 +960,7 @@ Desensamblado de la sección .text:
  d84:	00050713          	mv	a4,a0
  d88:	05157863          	bgeu	a0,a7,dd8 <memcpy+0xc8>
  d8c:	0005c783          	lbu	a5,0(a1)
- d90:	00170713          	addi	a4,a4,1 # 40001 <__crt0_copy_data_src_begin+0x3ee29>
+ d90:	00170713          	addi	a4,a4,1 # 40001 <__crt0_copy_data_src_begin+0x3ee25>
  d94:	00158593          	addi	a1,a1,1
  d98:	fef70fa3          	sb	a5,-1(a4)
  d9c:	fee898e3          	bne	a7,a4,d8c <memcpy+0x7c>
